@@ -3,17 +3,9 @@
 <configuration>
 
     <property name="log.base" value="logs" />
-    <property name="log.history" value="logsHistory" />
-
-    <timestamp key="dailyNaming" datePattern="yyyyMMdd_HH-mm"/>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--<file>${log.base}/cordova-pinpad-plugin.log</file>-->
-        <!--Use "dailyNaming" when you need files to be different and it to be managed by primary logging rather than archiving.-->
-        <!--Files should have same names so that the rolling will take over them. -->
-        <!--<file>${log.base}/cordova-pinpad-plugin-${dailyNaming}.log</file>-->
-        <!--<append>true</append>-->
-        <!--The format of the message-->
+        <file>${log.base}/cordova-pinpad-plugin.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>
                 %d{MM/dd/yyyy HH:mm:ss.SSSZ} [%-5level] %logger{35} - %msg%n
@@ -21,14 +13,15 @@
         </encoder>
 
         <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${log.history}/cordova-pinpad-plugin.%d{yyyy-MM-dd_HH-mm-ss}.log</fileNamePattern>
+            <fileNamePattern>${log.base}/cordova-pinpad-plugin.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>1KB</maxFileSize>
             <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
             <!--<totalSizeCap>20GB</totalSizeCap><maxFileSize>20MB</maxFileSize>-->
             <!--	The optional maxHistory property controls the maximum number of archive files to keep, asynchronously deleting older files. For example, if you specify monthly rollover, and set maxHistory to 6, then 6 months worth of archives files will be kept with files older than 6 months deleted. Note as old archived log files are removed, any folders which were created for the purpose of log file archiving will be removed as appropriate.-->
-            <maxHistory>3</maxHistory>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>30</totalSizeCap>
         </rollingPolicy>
 
     </appender>
